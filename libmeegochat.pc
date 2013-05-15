@@ -1,0 +1,13 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libmeegochat
+Description: MeeGo/Telepathy integration library
+Version: 0.0.1
+Libs: -L${libdir} -lmeegochat
+Cflags: -I${includedir}
+Requires: TelepathyQt4 QtDBus QtContacts
+
+
