@@ -26,9 +26,9 @@
 #include <QObject>
 #include <QPixmap>
 #include <QContact>
-#include <TelepathyQt4/Contact>
-#include <TelepathyQt4/TextChannel>
-#include <TelepathyQt4/ReceivedMessage>
+#include <TelepathyQt/Contact>
+#include <TelepathyQt/TextChannel>
+#include <TelepathyQt/ReceivedMessage>
 #include "meegochatcontactmanager.h"
 #include "meegochatmessage.h"
 
@@ -65,7 +65,7 @@ namespace MeeGoChat
         QString getStatusMsg() const;
         QString getTpID() const;
         void removeContact();
-        void requestChannel(QString channelType = TELEPATHY_INTERFACE_CHANNEL_TYPE_TEXT);
+        void requestChannel(QString channelType = TP_QT_IFACE_CHANNEL_TYPE_TEXT);
         Message * sendMessage(QString message);
         Message * getLastMessage(Message::Status dir = Message::NONE) const;
         const QList<Message *> getMessageList() const;

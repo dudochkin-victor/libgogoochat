@@ -25,9 +25,9 @@
 #include "meegochataccountmodel.h"
 #include "meegochatcontact.h"
 
-#include <TelepathyQt4/PendingReady>
-#include <TelepathyQt4/Debug>
-#include <TelepathyQt4/PendingAccount>
+#include <TelepathyQt/PendingReady>
+#include <TelepathyQt/Debug>
+#include <TelepathyQt/PendingAccount>
 
 using namespace QtMobility;
 
@@ -143,8 +143,8 @@ namespace MeeGoChat {
 
     QStringList AccountManager::getAllAccountPaths() const
     {
-        if (mReady)
-            return mTpAM->allAccountPaths();
+//        if (mReady)
+//            return mTpAM->allAccounts(); //DV
         return QStringList();
     }
 
@@ -239,37 +239,37 @@ namespace MeeGoChat {
                     this,
                     SIGNAL(AccountValidityChanged(QString,bool)));
 
-            if (mTpAM->allAccountPaths().count() == 0)
+            if (mTpAM->allAccounts().count() == 0)
             {
                 emit NoAccounts();
             } else {
-                foreach (Tp::AccountPtr tpAcct, mTpAM->validAccounts()) {
-                    Acct *acct = new Acct(tpAcct, this);
-                    if (!mFirstAccount && tpAcct->isEnabled()) {
-                        connect(acct,
-                                SIGNAL(Ready(Acct *)),
-                                this,
-                                SLOT(onFirstAccountReady(Acct *)));
-                        connect(acct,
-                                SIGNAL(ReadyError(Acct *,QString)),
-                                this,
-                                SLOT(onFirstAccountReadyError(Acct *, QString)));
-                        mFirstAccount = true;
-                    }
-                    connect(acct,
-                            SIGNAL(Ready(Acct *)),
-                            this,
-                            SLOT(onAccountReady(Acct *)));
-                    connect(acct,
-                            SIGNAL(ReadyError(Acct *,QString)),
-                            this,
-                            SLOT(onAccountReadyError(Acct *,QString)));
-                    connect(acct,
-                            SIGNAL(Removed(Acct*)),
-                            this,
-                            SLOT(onAccountRemoved(Acct*)));
-                    mAccounts.append(acct);
-                }
+//                foreach (Tp::AccountPtr tpAcct, mTpAM->validAccounts()) {
+//                    Acct *acct = new Acct(tpAcct, this);
+//                    if (!mFirstAccount && tpAcct->isEnabled()) {
+//                        connect(acct,
+//                                SIGNAL(Ready(Acct *)),
+//                                this,
+//                                SLOT(onFirstAccountReady(Acct *)));
+//                        connect(acct,
+//                                SIGNAL(ReadyError(Acct *,QString)),
+//                                this,
+//                                SLOT(onFirstAccountReadyError(Acct *, QString)));
+//                        mFirstAccount = true;
+//                    }
+//                    connect(acct,
+//                            SIGNAL(Ready(Acct *)),
+//                            this,
+//                            SLOT(onAccountReady(Acct *)));
+//                    connect(acct,
+//                            SIGNAL(ReadyError(Acct *,QString)),
+//                            this,
+//                            SLOT(onAccountReadyError(Acct *,QString)));
+//                    connect(acct,
+//                            SIGNAL(Removed(Acct*)),
+//                            this,
+//                            SLOT(onAccountRemoved(Acct*)));
+//                    mAccounts.append(acct);
+//                } //DV
             }
 
             mReady = true;

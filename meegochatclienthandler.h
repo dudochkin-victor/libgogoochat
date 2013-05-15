@@ -23,11 +23,11 @@
 #ifndef MEEGOCHATCLIENTHANDLER_H
 #define MEEGOCHATCLIENTHANDLER_H
 
-#include <TelepathyQt4/Channel>
-#include <TelepathyQt4/ChannelRequest>
-#include <TelepathyQt4/AbstractClient>
-#include <TelepathyQt4/AbstractClientHandler>
-#include <TelepathyQt4/ClientRegistrar>
+#include <TelepathyQt/Channel>
+#include <TelepathyQt/ChannelRequest>
+#include <TelepathyQt/AbstractClient>
+#include <TelepathyQt/AbstractClientHandler>
+#include <TelepathyQt/ClientRegistrar>
 
 
 namespace MeeGoChat {
@@ -40,8 +40,8 @@ namespace MeeGoChat {
     public:
 
         ClientHandler(
-                const Tp::ChannelClassList &channelFilter,
-                const QStringList &capabilities,
+                const Tp::ChannelClassSpecList &channelFilter,
+                const Capabilities &capabilities,
                 QString clientName,
                 bool wantsRequestNotification = false,
                 bool enableTpWarnings = false,

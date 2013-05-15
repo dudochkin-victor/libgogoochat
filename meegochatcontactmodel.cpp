@@ -24,7 +24,7 @@
 #include "meegochatcontact.h"
 #include "meegochatcontactmanager.h"
 
-#include <TelepathyQt4/PendingContacts>
+#include <TelepathyQt/PendingContacts>
 
 namespace MeeGoChat {
 

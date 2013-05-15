@@ -35,14 +35,14 @@
 
 #include <QtDBus>
 
-#include <TelepathyQt4/Types>
-#include <TelepathyQt4/Constants>
-#include <TelepathyQt4/Contact>
-#include <TelepathyQt4/ReferencedHandles>
-#include <TelepathyQt4/ReceivedMessage>
-#include <TelepathyQt4/TextChannel>
-#include <TelepathyQt4/PendingReady>
-#include <TelepathyQt4/ChannelRequest>
+#include <TelepathyQt/Types>
+#include <TelepathyQt/Constants>
+#include <TelepathyQt/Contact>
+#include <TelepathyQt/ReferencedHandles>
+#include <TelepathyQt/ReceivedMessage>
+#include <TelepathyQt/TextChannel>
+#include <TelepathyQt/PendingReady>
+#include <TelepathyQt/ChannelRequest>
 
 using namespace QtMobility;
 
@@ -130,7 +130,7 @@ namespace MeeGoChat {
     {
         if (mAccountOnline) {
             return Acct::mapTpStatusToAccountStatus(
-                    (Tp::ConnectionPresenceType)mTpContact->presenceType());
+                    (Tp::ConnectionPresenceType)mTpContact->presence().type());
         } else {
             return Acct::OFFLINE;
         }
@@ -146,7 +146,7 @@ namespace MeeGoChat {
         else if (tpContact->subscriptionState() == Tp::Contact::PresenceStateNo)
             return QString("Chat Approval Denied");
         else*/
-            return mTpContact->presenceMessage();
+            return mTpContact->presence().statusMessage();
     }
 
     QString ChatContact::getTpID() const
@@ -165,7 +165,7 @@ namespace MeeGoChat {
     {
         QVariantMap request;
         Tp::PendingChannelRequest *pcr;
-        if (channelType == TELEPATHY_INTERFACE_CHANNEL_TYPE_TEXT) {
+        if (channelType == TP_QT_IFACE_CHANNEL_TYPE_TEXT) {
             pcr = mAccount->ensureTextChat(this);
         } else {
             qDebug() << QString("Requested unhandled channel type of %1 in ChatContact::requestChannel!").arg(channelType);
@@ -256,7 +256,7 @@ namespace MeeGoChat {
             mChannels.insert(cPtr->channelType(), cPtr);
         }*/
 
-        if (cPtr->channelType() == TELEPATHY_INTERFACE_CHANNEL_TYPE_TEXT) {
+        if (cPtr->channelType() == TP_QT_IFACE_CHANNEL_TYPE_TEXT) {
             //Using mTextChan for now, until I further think about
             //the right way to use the type->channel mapping of mChannels...
             if (haveTextChannel()) {

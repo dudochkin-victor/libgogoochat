@@ -23,17 +23,17 @@
 #include "meegochatclienthandler.h"
 #include "meegochataccountmanager.h"
 
-#include <TelepathyQt4/Debug>
-#include <TelepathyQt4/Channel>
-#include <TelepathyQt4/MethodInvocationContext>
-
+#include <TelepathyQt/Debug>
+#include <TelepathyQt/Channel>
+#include <TelepathyQt/MethodInvocationContext>
+#include <TelepathyQt/Constants>
 
 namespace MeeGoChat {
 
 
     ClientHandler::ClientHandler(
-                const Tp::ChannelClassList &channelFilter,
-                const QStringList &capabilities,
+                const Tp::ChannelClassSpecList &channelFilter,
+                const Capabilities &capabilities,
                 QString clientName,
                 bool wantsRequestNotification,
                 bool enableTpWarnings,
@@ -70,21 +70,22 @@ namespace MeeGoChat {
         //If client capabilities aren't specified, assume just Text Channels
         if (cCaps.count() == 0) {
             cCaps.append(
-                QLatin1String(TELEPATHY_INTERFACE_CHANNEL ".TextChannel"));
+                TP_QT_IFACE_CHANNEL + QLatin1String(".TextChannel"));
         }
 
         if (cFilters.count() == 0) {
             QMap<QString, QDBusVariant> filter;
 
-            filter.insert(QLatin1String(TELEPATHY_INTERFACE_CHANNEL ".ChannelType"),
-                          QDBusVariant(QLatin1String(TELEPATHY_INTERFACE_CHANNEL_TYPE_TEXT)));
-            filter.insert(QLatin1String(TELEPATHY_INTERFACE_CHANNEL ".TargetHandleType"),
+            filter.insert(TP_QT_IFACE_CHANNEL + QLatin1String(".ChannelType"),
+                          QDBusVariant(QLatin1String(TP_QT_IFACE_CHANNEL_TYPE_TEXT)));
+            filter.insert(TP_QT_IFACE_CHANNEL + QLatin1String(".TargetHandleType"),
                           QDBusVariant((uint) Tp::HandleTypeContact));
             cFilters.append(filter);
         }
-        ClientHandler *clientHandler = new ClientHandler(cFilters, cCaps, clientName, wantReqNot, enableTpWarnings, enableTpDebug, parent);
+        /*ClientHandler *clientHandler = new ClientHandler(cFilters, cCaps, clientName, wantReqNot, enableTpWarnings, enableTpDebug, parent);
 
-        return clientHandler;
+        return clientHandler;*/
+        return NULL; //DV
     }
 
     void ClientHandler::handleChannels(const Tp::MethodInvocationContextPtr<> &context,

@@ -27,10 +27,10 @@
 #include <QString>
 #include <QMetaType>
 #include <QVariant>
-#include <TelepathyQt4/Account>
-#include <TelepathyQt4/Channel>
-#include <TelepathyQt4/Connection>
-#include <TelepathyQt4/PendingChannelRequest>
+#include <TelepathyQt/Account>
+#include <TelepathyQt/Channel>
+#include <TelepathyQt/Connection>
+#include <TelepathyQt/PendingChannelRequest>
 
 
 namespace MeeGoChat

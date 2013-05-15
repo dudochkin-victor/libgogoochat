@@ -24,8 +24,8 @@
 #define MEEGOCHATCONTACTMODEL_H
 
 #include <QAbstractListModel>
-#include <TelepathyQt4/ContactManager>
-#include <TelepathyQt4/PendingOperation>
+#include <TelepathyQt/ContactManager>
+#include <TelepathyQt/PendingOperation>
 
 namespace MeeGoChat
 {

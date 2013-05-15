@@ -24,7 +24,7 @@
 #define MEEGOCHATCONTACTMANAGER_H
 
 #include <QObject>
-#include <TelepathyQt4/ContactManager>
+#include <TelepathyQt/ContactManager>
 #include "meegochataccount.h"
 
 namespace Tp {

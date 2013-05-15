@@ -25,12 +25,15 @@
 #include "meegochatcontact.h"
 #include "meegochataccountmanager.h"
 
-#include <TelepathyQt4/Channel>
-#include <TelepathyQt4/Connection>
-#include <TelepathyQt4/PendingOperation>
-#include <TelepathyQt4/ConnectionInterfaceAvatarsInterface>
-#include <TelepathyQt4/PendingReady>
-#include <TelepathyQt4/PendingStringList>
+#include <TelepathyQt/Channel>
+#include <TelepathyQt/Constants>
+#include <TelepathyQt/Connection>
+#include <TelepathyQt/ConnectionLowlevel>
+#include <TelepathyQt/PendingChannel>
+#include <TelepathyQt/PendingOperation>
+#include <TelepathyQt/ConnectionInterfaceAvatarsInterface>
+#include <TelepathyQt/PendingReady>
+#include <TelepathyQt/PendingStringList>
 
 using namespace QtMobility;
 
@@ -85,14 +88,14 @@ namespace MeeGoChat {
     {
         if (!mReady)
             return QString();
-        return mTpAccount->icon();
+        return mTpAccount->iconName();
     }
 
     QString Acct::getTpProto()
     {
         if (!mReady)
             return QString();
-        return mTpAccount->protocol();
+        return mTpAccount->protocolName();
     }
 
     QString Acct::getTpAcctPath()
@@ -106,7 +109,7 @@ namespace MeeGoChat {
     {
         if (!mReady)
             return Acct::OFFLINE;
-        return mapTpStatusToAccountStatus((Tp::ConnectionPresenceType)mTpAccount->currentPresence().type);
+        return mapTpStatusToAccountStatus((Tp::ConnectionPresenceType)mTpAccount->currentPresence().type());
     }
 
     QString Acct::getStatusIcon()
@@ -279,7 +282,7 @@ namespace MeeGoChat {
     void Acct::onChannelReady(Tp::PendingOperation *po)
     {
         if (po->isFinished()) {
-            Tp::ChannelPtr cPtr = Tp::ChannelPtr(qobject_cast<Tp::Channel *>(dynamic_cast<Tp::PendingReady *>(po)->object()));
+            Tp::ChannelPtr cPtr = /*Tp::ChannelPtr(qobject_cast<Tp::Channel *>(*/dynamic_cast<Tp::PendingChannel *>(po)->channel()/*))*/;
             if (!cPtr->isValid() || !cPtr->isReady()) {
                 qDebug() << QString("Got an invalid/not ready ChannelPtr in Acct::onChannelReady!");
                 return;
@@ -313,7 +316,7 @@ namespace MeeGoChat {
                     SIGNAL(validityChanged(bool)),
                     this,
                     SLOT(onAcctValidityChanged(bool)));*/
-            if (mTpAccount->haveConnection())
+            if (mTpAccount->connectionStatus() == Tp::ConnectionStatusConnected)
                 onHaveConnectionChanged(true);
 
             mReady = true;
@@ -339,13 +342,13 @@ namespace MeeGoChat {
             feats << Tp::Connection::FeatureRosterGroups;
     //        feats << Tp::Connection::FeatureSelfContact;
             feats << Tp::Connection::FeatureSimplePresence;
-            connect(mTpConn->requestConnect(feats),
-                    SIGNAL(finished(Tp::PendingOperation*)),
-                    this, SLOT(onTpConnReady(Tp::PendingOperation*)));
+//            connect(mTpConn->requestConnect(feats),
+//                    SIGNAL(finished(Tp::PendingOperation*)),
+//                    this, SLOT(onTpConnReady(Tp::PendingOperation*))); //DV
         } else if (mTpAccount->connectionStatusReason() != Tp::ConnectionStatusReasonRequested)
         {
             //Try again
-            setStatus((Tp::ConnectionPresenceType)mTpAccount->requestedPresence().type);
+            setStatus((Tp::ConnectionPresenceType)mTpAccount->requestedPresence().type());
         }
 
     }
@@ -355,14 +358,14 @@ namespace MeeGoChat {
         if (po->isFinished())
         {
             mPrevStatus = mCurStatus;
-            mCurStatus = this->mapTpStatusToAccountStatus((Tp::ConnectionPresenceType)mTpAccount->requestedPresence().type);
+            mCurStatus = this->mapTpStatusToAccountStatus((Tp::ConnectionPresenceType)mTpAccount->requestedPresence().type());
 
             if (mCurStatus == OFFLINE)
                 emit Offline(this);
 
             if (mPrevStatus == Acct::OFFLINE) {
 
-                if (mTpAccount->haveConnection())
+                if (mTpAccount->connectionStatus() == Tp::ConnectionStatusConnected)
                 {
                     mTpConn = mTpAccount->connection();
                     Tp::Features feats = Tp::Features();
@@ -372,10 +375,10 @@ namespace MeeGoChat {
                     //feats << Tp::Connection::FeatureSelfContact;
                     feats << Tp::Connection::FeatureSimplePresence;
 
-                    connect(mTpConn->requestConnect(feats),
-                            SIGNAL(finished(Tp::PendingOperation*)),
-                            this,
-                            SLOT(onTpConnReady(Tp::PendingOperation*)));
+//                    connect(mTpConn->requestConnect(feats),
+//                            SIGNAL(finished(Tp::PendingOperation*)),
+//                            this,
+//                            SLOT(onTpConnReady(Tp::PendingOperation*))); //DV
                 }
             }
         } else if (po->isError())
@@ -389,8 +392,8 @@ namespace MeeGoChat {
     {
         if (po->isFinished() && mTpConn->isValid())
         {
-            if (mTpConn->avatarsInterface()->isValid())
-                mContactMgr->setAvatarInterface(mTpConn->avatarsInterface());
+            //if (mTpAccount->avatarRequirements().isValid())
+            //    mContactMgr->setAvatarInterface(mTpConn->avatarsInterface());
 
             //TODO: figure out how this will work with ContactManager...
             //ContactManager will need to connect to online/offline signals (or accountstatuschanged signal)

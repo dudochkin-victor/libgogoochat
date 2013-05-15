@@ -24,10 +24,12 @@
 #include "meegochatcontact.h"
 #include "meegochatcontactmodel.h"
 
-#include <TelepathyQt4/ConnectionInterfaceAvatarsInterface>
-#include <TelepathyQt4/PendingContacts>
-#include <TelepathyQt4/Contact>
-#include <TelepathyQt4/PendingOperation>
+#include <TelepathyQt/ConnectionInterfaceAvatarsInterface>
+#include <TelepathyQt/PendingContacts>
+#include <TelepathyQt/Contact>
+#include <TelepathyQt/ContactManager>
+#include <TelepathyQt/Feature>
+#include <TelepathyQt/PendingOperation>
 
 namespace MeeGoChat {
 
@@ -162,7 +164,7 @@ namespace MeeGoChat {
     {
         if (!mAccount->getTpConn().isNull() && mAccount->getTpConn()->isValid()
             && mAccount->getTpConn()->isReady()) {
-            mTpCM = mAccount->getTpConn()->contactManager();
+            mTpCM = mAccount->getTpConn()->contactManager().data();
 
             connect(mTpCM,
                     SIGNAL(presencePublicationRequested(Tp::Contacts)),
@@ -175,7 +177,7 @@ namespace MeeGoChat {
 
     void ContactManager::upgradeContacts(QList<Tp::ContactPtr> cList)
     {
-        QSet<Tp::Contact::Feature> cFeatures;
+        QSet<Tp::Feature> cFeatures;
         cFeatures << Tp::Contact::FeatureAlias
                 << Tp::Contact::FeatureAvatarToken
                 << Tp::Contact::FeatureSimplePresence;

@@ -25,10 +25,10 @@
 
 #include <QObject>
 #include <QContactManager>
-#include <TelepathyQt4/Account>
-#include <TelepathyQt4/AccountManager>
-#include <TelepathyQt4/PendingOperation>
-#include <TelepathyQt4/Channel>
+#include <TelepathyQt/Account>
+#include <TelepathyQt/AccountManager>
+#include <TelepathyQt/PendingOperation>
+#include <TelepathyQt/Channel>
 
 
 #include "meegochataccount.h"
