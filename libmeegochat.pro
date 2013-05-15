@@ -13,7 +13,7 @@ DEPENDPATH += .
 
 CONFIG += link_pkgconfig mobility debug
 MOBILITY += contacts
-PKGCONFIG += QtContacts TelepathyQt4
+PKGCONFIG += TelepathyQt4
 SUBDIRS += tests
 QT += dbus
 #INCLUDEPATH += /usr/include/telepathy-1.0
